@@ -1,0 +1,277 @@
+{
+  "name": "petFinder",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "Posts",
+      "items": [
+        {
+          "type": "http",
+          "name": "Show All Posts",
+          "seq": 1,
+          "request": {
+            "url": "{{baseurl}}/posts",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show A Post",
+          "seq": 2,
+          "request": {
+            "url": "{{baseurl}}/posts/1",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "Store a Post",
+          "seq": 3,
+          "request": {
+            "url": "{{baseurl}}/posts/create",
+            "method": "POST",
+            "headers": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"title\": \"Este es mi primer post!\",\n  \"content\": \"Espero llevarme bien con todos.\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update a Post",
+          "seq": 4,
+          "request": {
+            "url": "{{baseurl}}/posts/2/update",
+            "method": "PUT",
+            "headers": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n    \"description\": \"Friendly and well-trained golden retriever, missing since Tuesday from Central Park.\",\n    \"breed\": \"Golden Retriever\",\n    \"animal\": \"Dog\",\n    \"petName\": \"Buddy\",\n    \"placeLost\": \"Central Park, NYC\",\n    \"image\": \"[Binary image data]\"\n}\n",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete a Post",
+          "seq": 5,
+          "request": {
+            "url": "{{baseurl}}/posts/1/destroy",
+            "method": "DELETE",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Auth",
+      "items": [
+        {
+          "type": "http",
+          "name": "Register a User",
+          "seq": 2,
+          "request": {
+            "url": "{{baseurl}}/register",
+            "method": "POST",
+            "headers": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"retbleed\",\n  \"email\": \"retbleed@makeitbleed.com\",\n  \"password\": \"retbleed\",\n  \"password_confirmation\": \"retbleed\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "Login a User",
+          "seq": 2,
+          "request": {
+            "url": "{{baseurl}}/login",
+            "method": "POST",
+            "headers": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"email\": \"retbleed@makeitbleed.com\",\n  \"password\": \"retbleed\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "Logout a User",
+          "seq": 3,
+          "request": {
+            "url": "{{baseurl}}/logout",
+            "method": "POST",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": []
+          }
+        }
+      ]
+    }
+  ],
+  "activeEnvironmentUid": "UpaTclYhBW4OWlQ9daoc1",
+  "environments": [
+    {
+      "variables": [
+        {
+          "name": "baseurl",
+          "value": "http://127.0.0.1:8000/api",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        }
+      ],
+      "name": "Testing"
+    }
+  ]
+}
