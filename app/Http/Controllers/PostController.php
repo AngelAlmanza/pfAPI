@@ -63,33 +63,46 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'post.title' => 'required|string|max:255',
+            'post.content' => 'required|string',
+            'pet.name' => 'required|string|max:255',
+            'pet.type' => 'required|string',
+            'pet.breed' => 'required|string',
+            'pet.age' => 'required|string',
+            'pet.personality' => 'required|string',
         ]);
 
-        $post = Post::findOrFail($id);
+        $post = Post::with('pet')->findOrFail($id);
 
-        if (Auth::user()->can('update any post') || (Auth::user()->can('update own post') && $post->user_id === Auth::id())) {
-            $post->update([
-                'title' => $request->title,
-                'content' => $request->content,
-            ]);
+        // // Verificar si el usuario tiene permiso para actualizar el post y la pet
+        // if (!Auth::user()->can('update any post') && $post->user_id !== Auth::id()) {
+        //     return response()->json(['message' => 'Acción no autorizada'], 403);
+        // }
 
-            return response()->json(['post' => $post]);
-        }
+        $post->update([
+            'title' => $request->input('post.title'),
+            'content' => $request->input('post.content'),
+        ]);
 
-        return response()->json(['message' => 'Acción no autorizada'], 403);
+        $post->pet->update([
+            'name' => $request->input('pet.name'),
+            'type' => $request->input('pet.type'),
+            'breed' => $request->input('pet.breed'),
+            'age' => $request->input('pet.age'),
+            'personality' => $request->input('pet.personality'),
+        ]);
+
+        return response()->json(['post & pet' => $post]);
     }
+
 
     public function delete(Request $request, $id)
     {
         $post = Post::findOrFail($id);
+        $pet = Pet::findOrFail($post->pet_id);
 
-        if (Auth::user()->can('delete any post') || (Auth::user()->can('delete own post') && $post->user_id === Auth::id())) {
-            $post->delete();
-            return response()->json(['message' => 'Post eliminado exitosamente']);
-        }
-
-        return response()->json(['message' => 'Acción no autorizada'], 403);
+        $pet->delete();
+        $post->delete();
+        return response()->json(['message' => 'Post y Pet eliminado exitosamente']);
     }
 }
