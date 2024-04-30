@@ -102,12 +102,12 @@
           "name": "Update a Post",
           "seq": 4,
           "request": {
-            "url": "{{baseurl}}/posts/2/update",
+            "url": "{{baseurl}}/posts/1/update",
             "method": "PUT",
             "headers": [],
             "body": {
               "mode": "json",
-              "json": "{\n    \"description\": \"Friendly and well-trained golden retriever, missing since Tuesday from Central Park.\",\n    \"breed\": \"Golden Retriever\",\n    \"animal\": \"Dog\",\n    \"petName\": \"Buddy\",\n    \"placeLost\": \"Central Park, NYC\",\n    \"image\": \"[Binary image data]\"\n}\n",
+              "json": "{\n  \"pet\": {\n    \"name\": \"Rexy\",\n    \"type\": \"dog\",\n    \"breed\": \"Labradore\",\n    \"age\": \"12 years\",\n    \"personality\": \"Friendly\"\n  },\n  \"post\": {\n    \"title\": \"Looking for Keeper\",\n    \"content\": \"Rex is looking for a new home. He is very friendly and loves to play.\"\n  }\n}\n",
               "formUrlEncoded": [],
               "multipartForm": []
             },

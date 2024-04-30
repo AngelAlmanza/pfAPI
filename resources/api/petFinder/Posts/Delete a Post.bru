@@ -1,0 +1,20 @@
+meta {
+  name: Delete a Post
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseurl}}/posts/1/destroy
+  body: none
+  auth: none
+}
+
+auth:basic {
+  username: 
+  password: 
+}
+
+auth:bearer {
+  token: 
+}

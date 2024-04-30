@@ -1,0 +1,39 @@
+meta {
+  name: Store a Post
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseurl}}/posts/create
+  body: json
+  auth: none
+}
+
+auth:basic {
+  username: 
+  password: 
+}
+
+auth:bearer {
+  token: 
+}
+
+body:json {
+  {
+    "pet": {
+      "name": "Rex",
+      "type": "dog",
+      "breed": "Labrador",
+      "age": "5 years",
+      "personality": "Friendly"
+    },
+    "post": {
+      "title": "Looking for a New Home",
+      "content": "Rex is looking for a new home. He is very friendly and loves to play.",
+      "type": "adopt",
+      "location": "New York City"
+    }
+  }
+  
+}

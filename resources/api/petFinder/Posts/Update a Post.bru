@@ -1,0 +1,37 @@
+meta {
+  name: Update a Post
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseurl}}/posts/1/update
+  body: json
+  auth: none
+}
+
+auth:basic {
+  username: 
+  password: 
+}
+
+auth:bearer {
+  token: 
+}
+
+body:json {
+  {
+    "pet": {
+      "name": "Rexy",
+      "type": "dog",
+      "breed": "Labradore",
+      "age": "12 years",
+      "personality": "Friendly"
+    },
+    "post": {
+      "title": "Looking for Keeper",
+      "content": "Rex is looking for a new home. He is very friendly and loves to play."
+    }
+  }
+  
+}
