@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Pet;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -24,17 +25,39 @@ class PostController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'pet.name' => 'required|string|max:255',
+            'pet.type' => 'required|string',
+            'pet.breed' => 'required|string',
+            'pet.age' => 'required|string',
+            'pet.personality' => 'required|string',
+            'pet.image' => 'nullable|image',
+
+            'post.title' => 'required|string|max:255',
+            'post.content' => 'required|string',
+            'post.type' => 'required|string',
+            'post.location' => 'nullable|string',
         ]);
 
-        $post = Post::create([
-            'title' => $request->title,
-            'content' => $request->content,
+        $pet = Pet::create([
+            'name' => $request->input('pet.name'),
+            'type' => $request->input('pet.type'),
+            'breed' => $request->input('pet.breed'),
+            'age' => $request->input('pet.age'),
+            'personality' => $request->input('pet.personality'),
+            // 'image' => $request->file('pet.image')->store('pets', 'public'),
             'user_id' => Auth::id(),
         ]);
 
-        return response()->json(['post' => $post], 201);
+        $post = Post::create([
+            'title' => $request->input('post.title'),
+            'content' => $request->input('post.content'),
+            'type' => $request->input('post.type'),
+            'location' => $request->input('post.location'),
+            'user_id' => Auth::id(),
+            'pet_id' => $pet->id,
+        ]);
+
+        return response()->json(['pet' => $pet, 'post' => $post], 201);
     }
 
     public function update(Request $request, $id)

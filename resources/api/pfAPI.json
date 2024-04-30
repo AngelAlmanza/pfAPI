@@ -76,7 +76,7 @@
             "headers": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"title\": \"Este es mi primer post!\",\n  \"content\": \"Espero llevarme bien con todos.\"\n}",
+              "json": "{\n  \"pet\": {\n    \"name\": \"Rex\",\n    \"type\": \"dog\",\n    \"breed\": \"Labrador\",\n    \"age\": \"5 years\",\n    \"personality\": \"Friendly\"\n  },\n  \"post\": {\n    \"title\": \"Looking for a New Home\",\n    \"content\": \"Rex is looking for a new home. He is very friendly and loves to play.\",\n    \"type\": \"adopt\",\n    \"location\": \"New York City\"\n  }\n}\n",
               "formUrlEncoded": [],
               "multipartForm": []
             },

@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('pets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('title');
-            $table->enum('type', ['adopt', 'lost', 'found'])->default('lost');
-            $table->foreignId('pet_id')->constrained('pets')->onDelete('cascade');
-            $table->string('location')->nullable();
-            $table->text('content');
+            $table->string('name');
+            $table->string('image')->nullable();
+            $table->enum('type', ['dog', 'cat', 'bird', 'fish', 'hamster', 'rabbit', 'other'])->default('dog');
+            $table->string('breed');
+            $table->string('age');
+            $table->string("personality");
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('pets');
     }
 };
