@@ -23,4 +23,9 @@ class Image extends Model
     {
         return $this->belongsToMany(Pet::class);
     }
+
+    public function veterinaries()
+    {
+        return $this->belongsToMany(Veterinary::class);
+    }
 }
