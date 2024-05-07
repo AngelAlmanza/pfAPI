@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Pet;
+use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -30,7 +31,6 @@ class PostController extends Controller
             'pet.breed' => 'required|string',
             'pet.age' => 'required|string',
             'pet.personality' => 'required|string',
-            'pet.image' => 'nullable|image',
 
             'post.title' => 'required|string|max:255',
             'post.content' => 'required|string',
@@ -38,15 +38,26 @@ class PostController extends Controller
             'post.location' => 'nullable|string',
         ]);
 
+        $base64Image = $request->input('pet.image');
+        if ($base64Image) {
+            // $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+            $image = Image::create([
+                'base64_url' => $base64Image
+            ]);
+        }
+
         $pet = Pet::create([
             'name' => $request->input('pet.name'),
             'type' => $request->input('pet.type'),
             'breed' => $request->input('pet.breed'),
             'age' => $request->input('pet.age'),
             'personality' => $request->input('pet.personality'),
-            // 'image' => $request->file('pet.image')->store('pets', 'public'),
             'user_id' => Auth::id(),
         ]);
+
+        if (isset($image)) {
+            $pet->images()->attach($image->id);
+        }
 
         $post = Post::create([
             'title' => $request->input('post.title'),
