@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -13,17 +14,31 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'lastname' => 'string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['user' => $user], 201);
+        $profile = Profile::create([
+            'name' => $request->name,
+            'lastname' => $request->lastname,
+            'user_id' => $user->id,
+        ]);
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response()->json(['token' => $token,'user' => $user, 'profile' => $profile], 201);
     }
 
     public function login(Request $request)
@@ -34,6 +49,7 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
+        $profile = Profile::where('user_id', $user->id)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
@@ -43,7 +59,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('authToken')->plainTextToken;
 
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token,'user' => $user, 'profile' => $profile], 200);
     }
 
     public function logout(Request $request)
