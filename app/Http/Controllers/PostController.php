@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Pet;
 use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\Base64Image;
 
 class PostController extends Controller
 {
@@ -26,12 +27,16 @@ class PostController extends Controller
     public function create(Request $request)
     {
         $request->validate([
+            // VALIDACIONES DE PET
             'pet.name' => 'required|string|max:255',
             'pet.type' => 'required|string',
             'pet.breed' => 'required|string',
             'pet.age' => 'required|string',
             'pet.personality' => 'required|string',
+            'pet.image' => ['nullable', new Base64Image()],
+            'pet.image_type' => 'nullable|string',
 
+            // VALIDACIONES DE POST
             'post.title' => 'required|string|max:255',
             'post.content' => 'required|string',
             'post.type' => 'required|string',
@@ -42,7 +47,8 @@ class PostController extends Controller
         if ($base64Image) {
             // $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
             $image = Image::create([
-                'base64_url' => $base64Image
+                'base64_url' => $base64Image,
+                'type'=> $request->input('pet.image_type')
             ]);
         }
 
@@ -85,7 +91,7 @@ class PostController extends Controller
 
         $post = Post::with('pet')->findOrFail($id);
 
-        // // Verificar si el usuario tiene permiso para actualizar el post y la pet
+        // Verificar si el usuario tiene permiso para actualizar el post y la pet
         // if (!Auth::user()->can('update any post') && $post->user_id !== Auth::id()) {
         //     return response()->json(['message' => 'Acción no autorizada'], 403);
         // }
