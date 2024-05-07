@@ -1,0 +1,22 @@
+meta {
+  name: Update a Veterinary
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseurl}}/veterinaries/1/update
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Verinaria Chiapas [Buenos Aires]",
+    "address": "Av. Ahuehuetes, Buenos Aires, 23436 San José del Cabo, B.C.S.",
+    "phone": "+526241460606",
+    "latitude": "23.137718510318184",
+    "longitude": "-109.70979322716961",
+    "description":"Profesionalismo y buen trato."
+  }
+}
