@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\VeterinaryController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -31,5 +32,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create', [VeterinaryController::class, 'create']);
         Route::put('/{id}/update', [VeterinaryController::class, 'update']);
         Route::delete('/{id}/destroy', [VeterinaryController::class, 'delete']);
+    });
+
+    Route::prefix('reports')->group(function () {
+        Route::get('/', [ReportController::class, 'index']);
+        Route::get('/{id}', [ReportController::class, 'show']);
+        Route::post('/create', [ReportController::class, 'store']);
+        Route::put('/{id}/update', [ReportController::class, 'update']);
+        Route::delete('/{id}/destroy', [ReportController::class, 'destroy']);
     });
 });
