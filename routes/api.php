@@ -46,10 +46,19 @@ Route::middleware("auth:sanctum")->group(function () {
         Route::get("/", [ProfileController::class, "show"]);
         Route::post("/create", [ProfileController::class, "store"]);
         Route::put("/update-name", [ProfileController::class, "updateName"]);
-        Route::put("/update-last-name", [ProfileController::class,"updateLastName"]);
-        Route::put("/update-city", [ProfileController::class,"updateCity"]);
-        Route::put("/update-profile-picture", [ProfileController::class,"updateProfilePicture"]);
-        Route::put("/update-cover-picture", [ProfileController::class,"updateCoverPicture"]);
-        Route::delete("/destroy", [ProfileController::class,"delete"]))
+        // Route::put("/update-last-name", [
+        //     ProfileController::class,
+        //     "updateLastName",
+        // ]);
+        Route::put("/update-city", [ProfileController::class, "updateCity"]);
+        // Route::put("/update-profile-picture", [
+        //     ProfileController::class,
+        //     "updateProfilePicture",
+        // ]);
+        // Route::put("/update-cover-picture", [
+        //     ProfileController::class,
+        //     "updateCoverPicture",
+        // ]);
+        Route::delete("/destroy", [ProfileController::class, "delete"]);
     });
 });
