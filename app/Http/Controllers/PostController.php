@@ -13,13 +13,13 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(["pets", "user.profile"])->paginate(10);
+        $posts = Post::with(["pet", "user.profile"])->paginate(10);
         return response()->json(["posts" => $posts]);
     }
 
     public function show($id)
     {
-        $post = Post::with(["pets", "user.profile"])->findOrFail($id);
+        $post = Post::with(["pet", "user.profile"])->findOrFail($id);
         return response()->json(["post" => $post]);
     }
 
