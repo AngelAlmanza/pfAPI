@@ -122,4 +122,37 @@ class PostController extends Controller
             "message" => "Post y Pet eliminado exitosamente",
         ]);
     }
+
+    public function search(Request $request)
+    {
+        $query = Post::query();
+
+        // Check if title is present in the query parameters
+        if ($request->has("title")) {
+            $query->where(
+                "title",
+                "like",
+                "%" . $request->input("title") . "%"
+            );
+        }
+
+        // Check if content is present in the query parameters
+        if ($request->has("content")) {
+            $query->where(
+                "content",
+                "like",
+                "%" . $request->input("content") . "%"
+            );
+        }
+
+        // Check if the user ID is present in the query parameters
+        if ($request->has("user_id")) {
+            $query->where("user_id", $request->input("user_id"));
+        }
+
+        // Eager load pets and user profile relationships
+        $posts = $query->with(["pets", "user.profile"])->paginate(10);
+
+        return response()->json(["posts" => $posts]);
+    }
 }

@@ -24,19 +24,22 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|string',
-            'user_id' => 'required|integer',
-            'post_id' => 'required|integer',
-            'is_resolved' => 'sometimes|boolean',
-            'resolution' => 'sometimes|string',
-            'resolved_at' => 'sometimes|date',
-            'reported_at' => 'sometimes|date',
+            "content" => "required|string",
+            "user_id" => "required|integer",
+            "post_id" => "required|integer",
+            "is_resolved" => "sometimes|boolean",
+            "resolution" => "sometimes|string",
+            "resolved_at" => "sometimes|date",
+            "reported_at" => "sometimes|date",
         ]);
 
         $post = Post::findOrFail($request->post_id);
 
         if ($post->reported) {
-            return response()->json(['error' => 'This post has already been reported'], 400);
+            return response()->json(
+                ["error" => "This post has already been reported"],
+                400
+            );
         }
 
         $report = Report::create($request->all());
@@ -48,13 +51,13 @@ class ReportController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'content' => 'required|string',
-            'user_id' => 'required|integer',
-            'post_id' => 'required|integer',
-            'is_resolved' => 'sometimes|boolean',
-            'resolution' => 'sometimes|string',
-            'resolved_at' => 'sometimes|date',
-            'reported_at' => 'sometimes|date',
+            "content" => "required|string",
+            "user_id" => "required|integer",
+            "post_id" => "required|integer",
+            "is_resolved" => "sometimes|boolean",
+            "resolution" => "sometimes|string",
+            "resolved_at" => "sometimes|date",
+            "reported_at" => "sometimes|date",
         ]);
 
         $report = Report::findOrFail($id);
@@ -64,7 +67,7 @@ class ReportController extends Controller
     }
 
     // Delete a report
-    public function destroy($id)
+    public function delete($id)
     {
         $report = Report::findOrFail($id);
         $report->delete();
