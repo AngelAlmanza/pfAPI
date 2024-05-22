@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -25,7 +26,6 @@ class ReportController extends Controller
     {
         $request->validate([
             "content" => "required|string",
-            "user_id" => "required|integer",
             "post_id" => "required|integer",
             "is_resolved" => "sometimes|boolean",
             "resolution" => "sometimes|string",
@@ -41,8 +41,9 @@ class ReportController extends Controller
                 400
             );
         }
+        $user_id = Auth::id();
 
-        $report = Report::create($request->all());
+        $report = Report::create($request->all(), ["user_id" => $user_id]);
 
         return response()->json($report, 201);
     }
