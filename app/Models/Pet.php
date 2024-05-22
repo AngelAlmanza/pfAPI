@@ -26,6 +26,11 @@ class Pet extends Model
 
     public function images()
     {
-        return $this->belongsToMany(Image::class);
+        return $this->belongsToMany(
+            Image::class,
+            "images_pet",
+            "pet_id",
+            "image_id"
+        );
     }
 }

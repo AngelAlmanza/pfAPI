@@ -15,12 +15,12 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
-        'content',
-        'location',
-        'type',
-        'user_id',
-        'pet_id',
+        "title",
+        "content",
+        "location",
+        "type",
+        "user_id",
+        "pet_id",
     ];
 
     public function user()
