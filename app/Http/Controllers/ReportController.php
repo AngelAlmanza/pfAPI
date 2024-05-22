@@ -24,7 +24,7 @@ class ReportController extends Controller
     // Create a new report
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             "content" => "required|string",
             "post_id" => "required|integer",
             "is_resolved" => "sometimes|boolean",
@@ -33,7 +33,7 @@ class ReportController extends Controller
             "reported_at" => "sometimes|date",
         ]);
 
-        $post = Post::findOrFail($request->post_id);
+        $post = Post::findOrFail($validatedData["post_id"]);
 
         if ($post->reported) {
             return response()->json(
@@ -41,9 +41,12 @@ class ReportController extends Controller
                 400
             );
         }
+
         $user_id = Auth::id();
 
-        $report = Report::create($request->all(), ["user_id" => $user_id]);
+        $validatedData["user_id"] = $user_id;
+
+        $report = Report::create($validatedData);
 
         return response()->json($report, 201);
     }
