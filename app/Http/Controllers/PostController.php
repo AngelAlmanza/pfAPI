@@ -44,58 +44,42 @@ class PostController extends Controller
             "post.location" => "nullable|string",
         ]);
 
-        DB::beginTransaction();
+        $base64Image = $request->input("pet.image");
+        $image = null;
 
-        try {
-            // Handle image saving
-            $base64Image = $request->input("pet.image");
-            $image = null;
-
-            if ($base64Image) {
-                $image = Image::create([
-                    "base64_url" => $base64Image,
-                    "type" => $request->input("pet.image_type"),
-                ]);
-            }
-
-            // Create the pet
-            $pet = Pet::create([
-                "name" => $request->input("pet.name"),
-                "type" => $request->input("pet.type"),
-                "breed" => $request->input("pet.breed"),
-                "age" => $request->input("pet.age"),
-                "personality" => $request->input("pet.personality"),
-                "user_id" => Auth::id(),
+        if ($base64Image) {
+            $image = Image::create([
+                "base64_url" => $base64Image,
+                "type" => $request->input("pet.image_type"),
             ]);
-
-            // Attach the image to the pet if created
-            if ($image) {
-                $pet->images()->attach($image->id);
-            }
-
-            // Create the post
-            $post = Post::create([
-                "title" => $request->input("post.title"),
-                "content" => $request->input("post.content"),
-                "type" => $request->input("post.type"),
-                "location" => $request->input("post.location"),
-                "user_id" => Auth::id(),
-                "pet_id" => $pet->id,
-            ]);
-
-            DB::commit();
-
-            return response()->json(["pet" => $pet, "post" => $post], 201);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(
-                [
-                    "error" =>
-                        "An error occurred while creating the pet and post",
-                ],
-                500
-            );
         }
+
+        // Create the pet
+        $pet = Pet::create([
+            "name" => $request->input("pet.name"),
+            "type" => $request->input("pet.type"),
+            "breed" => $request->input("pet.breed"),
+            "age" => $request->input("pet.age"),
+            "personality" => $request->input("pet.personality"),
+            "user_id" => Auth::id(),
+        ]);
+
+        // Attach the image to the pet if created
+        if ($image) {
+            $pet->images()->attach($image->id);
+        }
+
+        // Create the post
+        $post = Post::create([
+            "title" => $request->input("post.title"),
+            "content" => $request->input("post.content"),
+            "type" => $request->input("post.type"),
+            "location" => $request->input("post.location"),
+            "user_id" => Auth::id(),
+            "pet_id" => $pet->id,
+        ]);
+
+        return response()->json(["pet" => $pet, "post" => $post], 201);
     }
 
     public function update(Request $request, $id)
