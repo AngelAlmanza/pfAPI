@@ -33,7 +33,8 @@ class PostController extends Controller
             "pet.breed" => "required|string",
             "pet.age" => "required|string",
             "pet.personality" => "required|string",
-            "pet.image" => ["nullable", new Base64Image()],
+            // "pet.image" => ["nullable", new Base64Image()],
+            "pet.image" => "nullable|string",
             "pet.image_type" => "nullable|string",
 
             // Post validations
