@@ -28,7 +28,7 @@ class Pet extends Model
     {
         return $this->belongsToMany(
             Image::class,
-            "images_pet",
+            "image_pet",
             "pet_id",
             "image_id"
         );
