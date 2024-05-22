@@ -8,6 +8,7 @@ use App\Models\Pet;
 use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\Base64Image;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -26,7 +27,7 @@ class PostController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            // VALIDACIONES DE PET
+            // Pet validations
             "pet.name" => "required|string|max:255",
             "pet.type" => "required|string",
             "pet.breed" => "required|string",
@@ -35,45 +36,65 @@ class PostController extends Controller
             "pet.image" => ["nullable", new Base64Image()],
             "pet.image_type" => "nullable|string",
 
-            // VALIDACIONES DE POST
+            // Post validations
             "post.title" => "required|string|max:255",
             "post.content" => "required|string",
             "post.type" => "required|string",
             "post.location" => "nullable|string",
         ]);
 
-        $base64Image = $request->input("pet.image");
-        if ($base64Image) {
-            // $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
-            $image = Image::create([
-                "base64_url" => $base64Image,
-                "type" => $request->input("pet.image_type"),
+        DB::beginTransaction();
+
+        try {
+            // Handle image saving
+            $base64Image = $request->input("pet.image");
+            $image = null;
+
+            if ($base64Image) {
+                $image = Image::create([
+                    "base64_url" => $base64Image,
+                    "type" => $request->input("pet.image_type"),
+                ]);
+            }
+
+            // Create the pet
+            $pet = Pet::create([
+                "name" => $request->input("pet.name"),
+                "type" => $request->input("pet.type"),
+                "breed" => $request->input("pet.breed"),
+                "age" => $request->input("pet.age"),
+                "personality" => $request->input("pet.personality"),
+                "user_id" => Auth::id(),
             ]);
+
+            // Attach the image to the pet if created
+            if ($image) {
+                $pet->images()->attach($image->id);
+            }
+
+            // Create the post
+            $post = Post::create([
+                "title" => $request->input("post.title"),
+                "content" => $request->input("post.content"),
+                "type" => $request->input("post.type"),
+                "location" => $request->input("post.location"),
+                "user_id" => Auth::id(),
+                "pet_id" => $pet->id,
+            ]);
+
+            DB::commit();
+
+            return response()->json(["pet" => $pet, "post" => $post], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(
+                [
+                    "error" =>
+                        "An error occurred while creating the pet and post",
+                ],
+                500
+            );
         }
-
-        $pet = Pet::create([
-            "name" => $request->input("pet.name"),
-            "type" => $request->input("pet.type"),
-            "breed" => $request->input("pet.breed"),
-            "age" => $request->input("pet.age"),
-            "personality" => $request->input("pet.personality"),
-            "user_id" => Auth::id(),
-        ]);
-
-        if (isset($image)) {
-            $pet->images()->attach($image->id);
-        }
-
-        $post = Post::create([
-            "title" => $request->input("post.title"),
-            "content" => $request->input("post.content"),
-            "type" => $request->input("post.type"),
-            "location" => $request->input("post.location"),
-            "user_id" => Auth::id(),
-            "pet_id" => $pet->id,
-        ]);
-
-        return response()->json(["pet" => $pet, "post" => $post], 201);
     }
 
     public function update(Request $request, $id)
@@ -108,7 +129,7 @@ class PostController extends Controller
             "personality" => $request->input("pet.personality"),
         ]);
 
-        return response()->json(["post & pet" => $post]);
+        return response()->json(["post" => $post]);
     }
 
     public function delete(Request $request, $id)
