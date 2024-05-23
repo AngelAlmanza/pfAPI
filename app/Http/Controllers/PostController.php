@@ -8,7 +8,6 @@ use App\Models\Pet;
 use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\Base64Image;
-use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -20,7 +19,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $post = Post::with(["pet", "user.profile"])->findOrFail($id);
+        $post = Post::with(["pet.images", "user.profile"])->findOrFail($id);
         return response()->json(["post" => $post]);
     }
 
