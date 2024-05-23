@@ -5,13 +5,13 @@ meta {
 }
 
 get {
-  url: {{baseurl}}/search?animal-type=dog
+  url: {{baseurl}}/search?animal-type=dog&title=Looking for a New Home&post-type=lost
   body: none
   auth: none
 }
 
 query {
   animal-type: dog
-  ~title: Looking for a New Home
-  ~content: Rex is looking for a new home. He is very friendly and loves to play.
+  title: Looking for a New Home
+  post-type: lost
 }

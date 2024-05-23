@@ -140,11 +140,11 @@ class PostController extends Controller
             );
         }
 
-        if ($request->has("content")) {
+        if ($request->has("post-type")) {
             $query->where(
-                "content",
+                "typet",
                 "like",
-                "%" . $request->input("content") . "%"
+                "%" . $request->input("post-type") . "%"
             );
         }
 
