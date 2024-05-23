@@ -18,6 +18,8 @@ Route::post("/login", [AuthController::class, "login"]);
 Route::middleware("auth:sanctum")->group(function () {
     Route::post("/logout", [AuthController::class, "logout"]);
 
+    Route::get("search", [PostController::class, "search"])
+
     Route::prefix("posts")->group(function () {
         Route::get("/", [PostController::class, "index"]);
         Route::get("/{id}", [PostController::class, "show"]);
@@ -44,21 +46,11 @@ Route::middleware("auth:sanctum")->group(function () {
 
     Route::prefix("profile")->group(function () {
         Route::get("/", [ProfileController::class, "show"]);
-        Route::post("/create", [ProfileController::class, "store"]);
-        Route::put("/update-name", [ProfileController::class, "updateName"]);
-        // Route::put("/update-last-name", [
-        //     ProfileController::class,
-        //     "updateLastName",
-        // ]);
-        Route::put("/update-city", [ProfileController::class, "updateCity"]);
-        // Route::put("/update-profile-picture", [
-        //     ProfileController::class,
-        //     "updateProfilePicture",
-        // ]);
-        // Route::put("/update-cover-picture", [
-        //     ProfileController::class,
-        //     "updateCoverPicture",
-        // ]);
+        // Route::post("/create", [ProfileController::class, "store"]);
+        Route::put("/update-profile", [
+            ProfileController::class,
+            "updateProfile",
+        ]);
         Route::delete("/destroy", [ProfileController::class, "delete"]);
     });
 });

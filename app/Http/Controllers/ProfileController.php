@@ -32,66 +32,24 @@ class ProfileController extends Controller
         return response()->json($profile, 201);
     }
 
-    public function updateName(Request $request)
+    public function updateProfile(Request $request)
     {
-        $request->validate([
-            "name" => "required|string",
-        ]);
+        $rules = [
+            "name" => "sometimes|required|string",
+            "last_name" => "sometimes|required|string",
+            "city" => "sometimes|required|string",
+            "profile_picture" => ["sometimes", "required", new Base64Image()],
+            "cover_picture" => ["sometimes", "required", new Base64Image()],
+        ];
+
+        $validatedData = $request->validate($rules);
 
         $profile = Profile::findOrFail(Auth::id());
-        $profile->name = $request->name;
-        $profile->save();
 
-        return response()->json($profile, 200);
-    }
+        foreach ($validatedData as $key => $value) {
+            $profile->$key = $value;
+        }
 
-    public function updateLastName(Request $request)
-    {
-        $request->validate([
-            "last_name" => "required|string",
-        ]);
-
-        $profile = Profile::findOrFail(Auth::id());
-        $profile->last_name = $request->last_name;
-        $profile->save();
-
-        return response()->json($profile, 200);
-    }
-
-    public function updateCity(Request $request)
-    {
-        $request->validate([
-            "city" => "required|string",
-        ]);
-
-        $profile = Profile::findOrFail(Auth::id());
-        $profile->city = $request->city;
-        $profile->save();
-
-        return response()->json($profile, 200);
-    }
-
-    public function updateProfilePicture(Request $request)
-    {
-        $request->validate([
-            "profile_picture" => ["required", new Base64Image()],
-        ]);
-
-        $profile = Profile::findOrFail(Auth::id());
-        $profile->profile_picture = $request->profile_picture;
-        $profile->save();
-
-        return response()->json($profile, 200);
-    }
-
-    public function updateCoverPicture(Request $request)
-    {
-        $request->validate([
-            "cover_picture" => ["required", new Base64Image()],
-        ]);
-
-        $profile = Profile::findOrFail(Auth::id());
-        $profile->cover_picture = $request->cover_picture;
         $profile->save();
 
         return response()->json($profile, 200);

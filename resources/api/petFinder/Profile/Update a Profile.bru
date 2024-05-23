@@ -1,0 +1,21 @@
+meta {
+  name: Update a Profile
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseurl}}/profile/update-profile
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "name": "John" // Puedes comentar cualquiera de estos.
+      // "last_name": "Doe",
+      // "city": "New York",
+      // "profile_picture": "base64encodedstring...",
+      // "cover_picture": "base64encodedstring..."
+  }
+}

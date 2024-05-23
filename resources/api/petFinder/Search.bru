@@ -1,0 +1,17 @@
+meta {
+  name: Search
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseurl}}/search?animal-type=dog
+  body: none
+  auth: none
+}
+
+query {
+  animal-type: dog
+  ~title: Looking for a New Home
+  ~content: Rex is looking for a new home. He is very friendly and loves to play.
+}
