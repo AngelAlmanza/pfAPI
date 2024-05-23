@@ -155,7 +155,7 @@ class PostController extends Controller
         }
 
         // Eager load pets and user profile relationships
-        $posts = $query->with(["pet", "user.profile"])->paginate(10);
+        $posts = $query->with(["pet.images", "user.profile"])->paginate(10);
 
         return response()->json(["posts" => $posts]);
     }

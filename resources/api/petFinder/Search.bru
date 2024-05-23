@@ -5,13 +5,13 @@ meta {
 }
 
 get {
-  url: {{baseurl}}/search?animal-type=dog&title=Looking for a New Home&post-type=lost
+  url: {{baseurl}}/search?post-type=adopt
   body: none
   auth: none
 }
 
 query {
-  animal-type: dog
-  title: Looking for a New Home
-  post-type: lost
+  post-type: adopt
+  ~animal-type: dog
+  ~title: Looking for a New Home
 }
