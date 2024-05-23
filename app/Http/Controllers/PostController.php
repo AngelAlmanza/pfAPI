@@ -133,7 +133,6 @@ class PostController extends Controller
     {
         $query = Post::query();
 
-        // Check if title is present in the query parameters
         if ($request->has("title")) {
             $query->where(
                 "title",
@@ -142,7 +141,6 @@ class PostController extends Controller
             );
         }
 
-        // Check if content is present in the query parameters
         if ($request->has("content")) {
             $query->where(
                 "content",
@@ -151,13 +149,43 @@ class PostController extends Controller
             );
         }
 
-        // Check if the user ID is present in the query parameters
         if ($request->has("user_id")) {
             $query->where("user_id", $request->input("user_id"));
         }
 
-        // Eager load pets and user profile relationships
         $posts = $query->with(["pets", "user.profile"])->paginate(10);
+
+        return response()->json(["posts" => $posts]);
+    }
+
+    public function search(Request $request)
+    {
+        $query = Post::query();
+
+        if ($request->has("title")) {
+            $query->where(
+                "title",
+                "like",
+                "%" . $request->input("title") . "%"
+            );
+        }
+
+        if ($request->has("content")) {
+            $query->where(
+                "content",
+                "like",
+                "%" . $request->input("content") . "%"
+            );
+        }
+
+        if ($request->has("animal-type")) {
+            $query->whereHas("pet", function ($q) use ($request) {
+                $q->where("type", $request->input("animal-type"));
+            });
+        }
+
+        // Eager load pets and user profile relationships
+        $posts = $query->with(["pet", "user.profile"])->paginate(10);
 
         return response()->json(["posts" => $posts]);
     }
